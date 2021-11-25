@@ -94,13 +94,13 @@ export default {
         }
     },
     watch: {
-        'param.city': {
+        'selected.city': {
             handler(val, oldVal) {
                 this.$emit("city", val)
             },
             deep: true,
         },
-        'param.type': {
+        'selected.type': {
             handler(val, oldVal) {
                 this.$emit("type", val)
             },

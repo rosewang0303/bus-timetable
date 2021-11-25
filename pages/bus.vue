@@ -10,28 +10,12 @@
                 <div class="col-lg-7 col-md-6 col-12">
                     <div class="bus__search-city"></div>
                     <div class="bus__search-list">
-                        <div class="bus__search-item">
-                            <div class="bus__route-name">紅10</div>
+                        <div v-for="(item, index) in searchList" :key="index" class="bus__search-item">
+                            <div class="bus__route-name">{{item.RouteName.Zh_tw}}</div>
                             <div class="bus__route-info">
-                                <div>台北海大</div>
+                                <div>{{item.DepartureStopNameZh}}</div>
                                 <div class="bus__route-to">往</div>
-                                <div>捷運劍潭站</div>
-                            </div>
-                        </div>
-                        <div class="bus__search-item">
-                            <div class="bus__route-name">紅10</div>
-                            <div class="bus__route-info">
-                                <div>台北海大</div>
-                                <div class="bus__route-to">往</div>
-                                <div>捷運劍潭站</div>
-                            </div>
-                        </div>
-                        <div class="bus__search-item">
-                            <div class="bus__route-name">紅10</div>
-                            <div class="bus__route-info">
-                                <div>台北海大</div>
-                                <div class="bus__route-to">往</div>
-                                <div>捷運劍潭站</div>
+                                <div>{{item.DestinationStopNameZh}}</div>
                             </div>
                         </div>
                     </div>
@@ -51,13 +35,14 @@ export default {
                 city: null,
                 type: null,
             },
+            searchList: [],
         }
     },
     watch: {
         param: {
             handler(val, oldVal) {
                 // 至少要有縣市
-                if(this.selected.city) {
+                if(this.param.city) {
                     this.fetchBusRouteByCity();
                 }else {
                     // 沒有縣市，無法搜尋
@@ -85,6 +70,7 @@ export default {
         },
         // 選擇城市
         selectCity(city) {
+            this.param.keyword = '';
             this.param.city = city;
         },
         // 選擇種類
@@ -93,10 +79,14 @@ export default {
         },
         // api 取得指定[縣市]的市區公車路線資料
         fetchBusRouteByCity() {
-            const param = ""
+            let param = ""
+            if(this.param.keyword) {
+                param = {
+                    '$filter': `contains(RouteName/Zh_tw, '${this.param.keyword}')`
+                }
+            }
             getBusRouteByCity(this.param.city, param).then(response => {
-                
-                
+                this.searchList = response;
             });
         },
     }
