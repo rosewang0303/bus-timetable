@@ -1,8 +1,9 @@
 # THE F2E 3rd Week3-全台公車動態時刻查詢應用服務
 
 ## 作品說明
-查詢全台 。
+查詢全台公車、客運的動態時刻。
 
+使用Nuxt.js Vue的SSR框架開發，並結合google map api服務，在地圖上顯示公車、客運動態站牌狀態。
 
 ## 系統說明
 ```bash
@@ -28,6 +29,7 @@ $ yarn generate
 * pages：網站頁面
 * service：axios設定 request response
 * static：靜態檔
+* plugins: 共用的javascript
 
 
 ## 使用技術
@@ -39,4 +41,5 @@ $ yarn generate
 
 ## 第三方服務
 * TDX api v2
+* google map api
 

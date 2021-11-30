@@ -6,22 +6,22 @@
                 {{cityList[selected.cityIndex].title}}
             </div>
             <div class="keyboard-bus__item keyboard-bus__item--col-2" @click="$emit('manual')">手動輸入</div>
-            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '紅'}" @click="selected.type = '紅'">紅</div>
-            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '藍'}" @click="selected.type = '藍'">藍</div>
+            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '紅'}" @click="enterType('紅')">紅</div>
+            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '藍'}" @click="enterType('藍')">藍</div>
             <div class="keyboard-bus__item keyboard-bus__item--number" @click="enterNumber('1')">1</div>
             <div class="keyboard-bus__item keyboard-bus__item--number" @click="enterNumber('2')">2</div>
             <div class="keyboard-bus__item keyboard-bus__item--number" @click="enterNumber('3')">3</div>
-            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '綠'}" @click="selected.type = '綠'">綠</div>
-            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '棕'}" @click="selected.type = '棕'">棕</div>
+            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '綠'}" @click="enterType('綠')">綠</div>
+            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '棕'}" @click="enterType('棕')">棕</div>
             <div class="keyboard-bus__item keyboard-bus__item--number" @click="enterNumber('4')">4</div>
             <div class="keyboard-bus__item keyboard-bus__item--number" @click="enterNumber('5')">5</div>
             <div class="keyboard-bus__item keyboard-bus__item--number" @click="enterNumber('6')">6</div>
-            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '橘'}" @click="selected.type = '橘'">橘</div>
-            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '小'}" @click="selected.type = '小'">小</div>
+            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '橘'}" @click="enterType('橘')">橘</div>
+            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '小'}" @click="enterType('小')">小</div>
             <div class="keyboard-bus__item keyboard-bus__item--number" @click="enterNumber('7')">7</div>
             <div class="keyboard-bus__item keyboard-bus__item--number" @click="enterNumber('8')">8</div>
             <div class="keyboard-bus__item keyboard-bus__item--number" @click="enterNumber('9')">9</div>
-            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '幹線'}" @click="selected.type = '幹線'">幹線</div>
+            <div class="keyboard-bus__item" :class="{'keyboard-bus__item--active': selected.type == '幹線'}" @click="enterType('幹線')">幹線</div>
             <div class="keyboard-bus__item" @click="showkeyboard('more')">更多</div>
             <div class="keyboard-bus__item" @click="delWord()">C</div>
             <div class="keyboard-bus__item keyboard-bus__item--number">0</div>
@@ -31,7 +31,7 @@
         </div>
         <div v-if="keyboardType == 'more'" class="keyboard-bus__wrap keyboard-bus__wrap--more">
             <div v-for="(item, index) in typeList" :key="index" class="keyboard-bus__item keyboard-bus__item--order-1"
-                :class="['keyboard-bus__item--order-' + (index+1), {'keyboard-bus__item--active': selected.type == item.value}]" @click="selected.type = item.value; selected.typeIndex = index">{{item.title}}</div>
+                :class="['keyboard-bus__item--order-' + (index+1), {'keyboard-bus__item--active': selected.type == item.value}]" @click="enterType(item.value); selected.typeIndex = index">{{item.title}}</div>
             <div class="keyboard-bus__item keyboard-bus__item--col-3" @click="showkeyboard('default')">回上一頁</div>
         </div>
         <div v-if="keyboardType == 'city'" class="keyboard-bus__wrap keyboard-bus__wrap--city">
@@ -115,6 +115,11 @@ export default {
         // 輸入數字
         enterNumber(number) {
             this.$emit("addNumber", number)
+        },
+        // 輸入路線關鍵字
+        enterType(type) {
+            this.selected.type = type;
+            this.$emit("addType", type)
         },
         // 刪除一個字
         delWord() {

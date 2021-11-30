@@ -4,19 +4,21 @@
             <div class="row">
                 <div class="col-lg-5 col-md-6 col-12">
                     <SearchBar v-model="param.keyword" class="bus__search-bar" placeholder="選擇路線或手動輸入關鍵字"/>
-                    <KeyboardBus class="bus__keyboard" @manual="keyboardManual" @addNumber="addNumber" @delWord="delWord" @delAll="delAll" 
+                    <KeyboardBus class="bus__keyboard" @manual="keyboardManual" @addNumber="addNumber" @addType="addType" @delWord="delWord" @delAll="delAll" 
                         @city="selectCity" @type="selectType"/>
                 </div>
                 <div class="col-lg-7 col-md-6 col-12">
-                    <div class="bus__search-city"></div>
+                    <div class="bus__search-city">{{cityText}}</div>
                     <div class="bus__search-list">
                         <div v-for="(item, index) in searchList" :key="index" class="bus__search-item">
-                            <div class="bus__route-name">{{item.RouteName.Zh_tw}}</div>
-                            <div class="bus__route-info">
-                                <div>{{item.DepartureStopNameZh}}</div>
-                                <div class="bus__route-to">往</div>
-                                <div>{{item.DestinationStopNameZh}}</div>
-                            </div>
+                            <nuxt-link :to="{name: 'bus-city-route', params: {city: param.city, route: item.RouteName.Zh_tw}}">
+                                <div class="bus__route-name">{{item.RouteName.Zh_tw}}</div>
+                                <div class="bus__route-info">
+                                    <div>{{item.DepartureStopNameZh}}</div>
+                                    <div class="bus__route-to">往</div>
+                                    <div>{{item.DestinationStopNameZh}}</div>
+                                </div>
+                            </nuxt-link>
                         </div>
                     </div>
                 </div>
@@ -36,6 +38,15 @@ export default {
                 type: null,
             },
             searchList: [],
+        }
+    },
+    computed: {
+        cityText() {
+            if(this.param.city) {
+                return this.formatCityName(this.param.city)
+            }else {
+                return '請先選擇縣市'
+            }
         }
     },
     watch: {
@@ -59,6 +70,10 @@ export default {
         // 輸入數字
         addNumber(number) {
             this.param.keyword += number;
+        },
+        // 輸入路線關鍵字
+        addType(type) {
+            this.param.keyword += type;
         },
         // 刪除一個字
         delWord() {
@@ -89,6 +104,10 @@ export default {
                 this.searchList = response;
             });
         },
+        // 前往公車路線
+        toBusInfoPage(item) {
+            this.router.push({name: 'bus-route', params: {route: item.RouteName.Zh_tw}})
+        },
     }
 }
 </script>
@@ -107,13 +126,14 @@ export default {
         color: $white;
         font-size: 16px;
         line-height: 23px;
+        margin-bottom: 6px;
     }
     &__search-list {
-        margin-top: 6px;
         height: 100vh;
         overflow: scroll;
     }
     &__search-item {
+        cursor: pointer;
         border-radius: 6px;
         padding: 12px 16px;
         &:nth-child(even) {
