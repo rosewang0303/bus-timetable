@@ -5,7 +5,7 @@
 
 使用Nuxt.js Vue的SSR框架開發，並結合google map api服務，在地圖上顯示公車、客運動態站牌狀態。
 
-Demo: [https://thef2e-2021-week03.netlify.app/](https://thef2e-2021-week03.netlify.app/)
+Demo：[https://thef2e-2021-week03.netlify.app/](https://thef2e-2021-week03.netlify.app/)
 
 ## 系統說明
 ```bash
